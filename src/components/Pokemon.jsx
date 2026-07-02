@@ -6,15 +6,38 @@ function Pokemon() {
         const resData = await fetch(apiUrl);
         const jsonData  = await resData.json();
 
-        setPokemonList(jsonData.results);
+        let pokemonDetail = []
+        jsonData.results.map(async(item, index)=>{
+            const resDataDetail = await fetch(item.url);
+            const jsonDataDetail = await resDataDetail.json();  
+            pokemonDetail[index] = jsonDataDetail
+            
+        })
+        // setPokemonList(jsonData.results);
+        console.log(pokemonDetail);
     }
 
     useEffect(() => {
         getAllPokemon();
     },[])
-    console.log(pokemonList);
+
+    // console.log(pokemonList);
     return (
-        <div>Pokemon</div>
+        <div className='wrapper'>
+            <div className="content">
+                <div className="grid">
+                    {
+                        pokemonList.map((item)=>{
+                            return(
+                                <div className='item'>
+                                    <div className='title'>{item.name}</div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </div>
+        </div>
     )
 }
 
